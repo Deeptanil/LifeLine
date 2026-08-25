@@ -1,6 +1,6 @@
-# RapidCare 🚑
+# Lifeline 🚑
 
-RapidCare is a modern healthcare and emergency dispatch platform designed to provide instant access to medical services. From emergency ambulance requests to scheduled doctor consultations and medicine delivery, RapidCare is built for speed, safety, and a premium user experience.
+Lifeline is an all-in-one healthcare and emergency dispatch platform designed to provide instant access to medical services. From emergency ambulance requests to scheduled doctor consultations, pharmacy delivery, and IoT hardware integration, Lifeline is built for speed, safety, and a premium user experience.
 
 ## ✨ Features
 *   **Emergency SOS**: One-tap ambulance dispatch with real-time tracking and estimated arrival times.
