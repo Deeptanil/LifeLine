@@ -1,14 +1,51 @@
+export interface EmergencyContact {
+  name: string;
+  relation: string;
+  phone: string;
+}
+
 export interface User {
   id: string;
   name: string;
   phone: string;
   passwordHash: string;
   token?: string;
+  age?: number;
+  gender?: string;
+  bloodGroup?: string;
+  allergies?: string;
+  chronicConditions?: string;
+  medications?: string;
+  emergencyContacts?: EmergencyContact[];
+  insurancePolicy?: string;
+  primaryDoctor?: string;
+  organDonor?: boolean;
+  isOnboardingComplete?: boolean;
   history?: any[];
 }
 
 let mockUsers: User[] = [
-  { id: '100', name: 'Sheersha', phone: '9686566111', passwordHash: '12345678', history: [] }
+  {
+    id: '100',
+    name: 'Sheersha',
+    phone: '9686566111',
+    passwordHash: '12345678',
+    age: 26,
+    gender: 'Male',
+    bloodGroup: 'O+',
+    allergies: 'Penicillin, Peanuts',
+    chronicConditions: 'Mild Asthma',
+    medications: 'Asthalin Inhaler as needed',
+    emergencyContacts: [
+      { name: 'Rohan Sharma', relation: 'Brother', phone: '+91 98765 43210' },
+      { name: 'Dr. Shruti Sharma', relation: 'Primary Physician', phone: '+91 91234 56789' }
+    ],
+    insurancePolicy: 'HDFC Ergo Health - POL987654',
+    primaryDoctor: 'Dr. Shruti Sharma',
+    organDonor: true,
+    isOnboardingComplete: true,
+    history: []
+  }
 ];
 
 const DOCTORS = [

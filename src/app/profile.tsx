@@ -61,6 +61,25 @@ export default function ProfileScreen() {
             <Text style={[styles.avatarPhone, { color: C.textMuted }]}>+91 {user.phone}</Text>
           </View>
 
+          {/* Emergency Medical ID Card */}
+          <View style={styles.section}>
+            <Text style={[styles.sectionTitle, { color: C.textMuted }]}>Emergency Medical ID</Text>
+            <TouchableOpacity
+              style={[styles.actionRow, { backgroundColor: 'rgba(232,41,58,0.12)', borderColor: C.red, borderWidth: 1 }]}
+              onPress={() => router.push('/onboarding')}
+              activeOpacity={0.8}
+            >
+              <Ionicons name="card" size={24} color={C.red} />
+              <View style={{ flex: 1, marginLeft: 14 }}>
+                <Text style={[styles.actionText, { color: C.textMain, marginLeft: 0 }]}>Edit Emergency Health ID</Text>
+                <Text style={{ fontSize: RF(11), color: C.textMuted, marginTop: 2 }}>
+                  Blood: {user.bloodGroup || 'O+'} · Allergies: {user.allergies || 'None'}
+                </Text>
+              </View>
+              <Ionicons name="chevron-forward" size={20} color={C.red} />
+            </TouchableOpacity>
+          </View>
+
           {/* Theme Toggle Section */}
           <View style={[styles.section]}>
             <Text style={[styles.sectionTitle, { color: C.textMuted }]}>Appearance</Text>

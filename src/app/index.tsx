@@ -11,12 +11,12 @@ import { RF } from '../utils/Responsive';
 export default function HomeScreen() {
   const router = useRouter();
   const { user } = useAuth();
-  const { dispatches, iotOnline } = useDispatch();
+  const { dispatches } = useDispatch();
 
   const { C, isDark } = useTheme();
   const styles = getStyles(C, isDark);
 
-  const activeDispatch = dispatches.find(d => d.type === 'ambulance' || d.type === 'medic');
+  const activeDispatch = dispatches.find(d => d.type === 'ambulance' || d.type === 'medic' || d.type === 'tele_medic');
 
   const handleSOS = () => {
     if (activeDispatch) {
@@ -32,11 +32,12 @@ export default function HomeScreen() {
 
       <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{ paddingBottom: 160 }}>
 
+        {/* Top Header */}
         <View style={styles.header}>
           <View style={styles.headerTopRow}>
             <View>
-              <Text style={styles.greeting}>Good morning,</Text>
-              <Text style={styles.userName}>{user?.name?.split(' ')[0] || 'Guest'}</Text>
+              <Text style={styles.greeting}>Lifeline Unified Care,</Text>
+              <Text style={styles.userName}>{user?.name?.split(' ')[0] || 'User'}</Text>
             </View>
             <TouchableOpacity onPress={() => router.push('/profile')} activeOpacity={0.8}>
               <View style={styles.avatarWrap}>
@@ -46,102 +47,145 @@ export default function HomeScreen() {
           </View>
         </View>
 
-        <View style={styles.grid}>
-          <TouchableOpacity style={[styles.actionCard, { backgroundColor: C.cardBg, borderColor: 'rgba(99,139,255,0.3)' }]} activeOpacity={0.8} onPress={() => router.push('/doctor')}>
-            <View style={[styles.cardIconWrap, { backgroundColor: 'rgba(99,139,255,0.15)' }]}>
-              <Ionicons name="medical" size={24} color="#638BFF" />
-            </View>
-            <Text style={styles.cardTitle}>Find Doctor</Text>
-          </TouchableOpacity>
-
-          <TouchableOpacity style={[styles.actionCard, { backgroundColor: C.cardBg, borderColor: 'rgba(0,201,167,0.3)' }]} activeOpacity={0.8} onPress={() => router.push('/medicine')}>
-            <View style={[styles.cardIconWrap, { backgroundColor: 'rgba(0,201,167,0.15)' }]}>
-              <Ionicons name="cart" size={24} color={C.teal} />
-            </View>
-            <Text style={styles.cardTitle}>Pharmacy</Text>
-          </TouchableOpacity>
-        </View>
-
-        {/* IoT Device Status Card */}
-        <View style={{ paddingHorizontal: 22, marginBottom: 14 }}>
+        {/* Emergency Medical ID Badge Banner */}
+        <View style={{ paddingHorizontal: 22, marginBottom: 16 }}>
           <TouchableOpacity
-            style={[styles.iotCard, { backgroundColor: C.cardBg, borderColor: iotOnline ? 'rgba(0,201,167,0.3)' : C.cardBorder }]}
-            activeOpacity={0.8}
-            onPress={() => router.push('/iot')}
+            style={[styles.emergencyBadge, { backgroundColor: C.navy2, borderColor: C.cardBorder }]}
+            onPress={() => router.push(user?.isOnboardingComplete ? '/profile' : '/onboarding')}
+            activeOpacity={0.9}
           >
-            <View style={[styles.iotIconWrap, { backgroundColor: iotOnline ? 'rgba(0,201,167,0.1)' : 'rgba(255,255,255,0.05)' }]}>
-              <Ionicons name="hardware-chip" size={22} color={iotOnline ? C.teal : C.textDim} />
+            <View style={[styles.bloodBadge, { backgroundColor: C.red }]}>
+              <Text style={styles.bloodText}>{user?.bloodGroup || 'O+'}</Text>
             </View>
             <View style={{ flex: 1 }}>
-              <Text style={styles.iotTitle}>IoT Emergency Button</Text>
-              <Text style={[styles.iotStatus, { color: iotOnline ? C.teal : C.textDim }]}>
-                {iotOnline ? '● Device Online' : '○ Ready to Link'}
+              <View style={{ flexDirection: 'row', alignItems: 'center', gap: 6 }}>
+                <Text style={[styles.badgeName, { color: C.textMain }]}>{user?.name || 'Complete Setup'}</Text>
+                {user?.organDonor ? (
+                  <View style={[styles.donorPill, { backgroundColor: 'rgba(0,201,167,0.15)' }]}>
+                    <Text style={{ color: C.green, fontSize: RF(10), fontWeight: '700' }}>Organ Donor</Text>
+                  </View>
+                ) : null}
+              </View>
+              <Text style={[styles.badgeSub, { color: C.textMuted }]}>
+                {user?.allergies ? `Allergies: ${user.allergies}` : 'Tap to complete emergency setup'}
               </Text>
             </View>
             <Ionicons name="chevron-forward" size={20} color={C.textDim} />
           </TouchableOpacity>
         </View>
 
+        {/* SOS Emergency Dispatch Button */}
         <View style={styles.sosGrid}>
           {activeDispatch ? (
             <TouchableOpacity
-              style={[styles.sosCard, { backgroundColor: 'rgba(245,158,11,0.15)', borderColor: C.amber, elevation: 0, shadowOpacity: 0 }]}
+              style={[styles.sosCard, { backgroundColor: 'rgba(245,158,11,0.15)', borderColor: C.amber }]}
               onPress={handleSOS}
               activeOpacity={0.8}
             >
-              <View style={[styles.sosRipple, { backgroundColor: 'transparent' }]}>
+              <View style={styles.sosRipple}>
                 <Ionicons name={(activeDispatch.icon as any) || "map"} size={32} color={C.amber} />
               </View>
               <Text style={[styles.cardTitle, { color: C.amber, fontSize: RF(18), letterSpacing: 1, marginTop: 4 }]}>
-                {activeDispatch.type === 'ambulance' ? 'Ambulance Active' : activeDispatch.type === 'medic' ? 'Medic Active' : 'Order Tracking'}
+                {activeDispatch.type === 'ambulance' ? 'Ambulance Dispatched' : 'Care Dispatch Active'}
               </Text>
-              <Text style={[styles.sosSub, { color: C.amber }]}>Tap to view status</Text>
+              <Text style={[styles.sosSub, { color: C.amber }]}>Tap to view real-time tracking</Text>
             </TouchableOpacity>
           ) : (
             <TouchableOpacity style={[styles.sosCard, { backgroundColor: C.redDark, borderColor: C.red }]} onPress={handleSOS} activeOpacity={0.8}>
               <View style={styles.sosRipple}>
                 <Ionicons name="warning" size={32} color="#fff" />
               </View>
-              <Text style={[styles.cardTitle, { color: '#fff', fontSize: RF(20), letterSpacing: 2, marginTop: 4 }]}>SOS Emergency</Text>
-              <Text style={[styles.sosSub, { color: '#fff' }]}>Tap to get help</Text>
+              <Text style={[styles.cardTitle, { color: '#fff', fontSize: RF(20), letterSpacing: 2, marginTop: 4 }]}>SOS Ambulance</Text>
+              <Text style={[styles.sosSub, { color: '#fff' }]}>One-tap emergency dispatch</Text>
             </TouchableOpacity>
           )}
         </View>
 
-        <TouchableOpacity onPress={() => router.push('/symptoms')} activeOpacity={0.9}>
-          <View style={styles.triageBanner}>
-            <View style={styles.triageBannerContent}>
-              <Text style={styles.triageTitle}>Free Health Checker</Text>
-              <Text style={styles.triageSub}>Identify your condition and get recommended steps or dispatch a Nurse home directly.</Text>
-            </View>
-            <View style={styles.triageIconBadge}>
-              <Ionicons name="git-network" size={28} color={C.amber} />
-            </View>
-          </View>
-        </TouchableOpacity>
+        {/* Unified Sector Grid */}
+        <Text style={[styles.sectionHeading, { color: C.textMain }]}>Unified Healthcare Sectors</Text>
 
-        <View style={{ paddingHorizontal: 22, marginTop: 10 }}>
-          <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', marginBottom: 16 }}>
-            <Text style={styles.sectionTitle}>Quick Reorder</Text>
-            <TouchableOpacity onPress={() => router.push('/medicine')}>
-              <Text style={styles.seeAllText}>Store →</Text>
-            </TouchableOpacity>
-          </View>
+        <View style={styles.grid}>
+          {/* 1. Medic Home Dispatch */}
+          <TouchableOpacity
+            style={[styles.actionCard, { backgroundColor: C.cardBg, borderColor: 'rgba(99,139,255,0.3)' }]}
+            activeOpacity={0.8}
+            onPress={() => router.push({ pathname: '/emergency', params: { type: 'medic' } })}
+          >
+            <View style={[styles.cardIconWrap, { backgroundColor: 'rgba(99,139,255,0.15)' }]}>
+              <Ionicons name="person-add" size={24} color="#638BFF" />
+            </View>
+            <Text style={styles.cardTitle}>Medic Home</Text>
+            <Text style={styles.cardSub}>Nurse dispatched to home</Text>
+          </TouchableOpacity>
 
-          <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={{ paddingBottom: 20, gap: 14 }}>
-            {[{ icon: 'medkit', name: 'Paracetamol 500mg', price: '24' }, { icon: 'water', name: 'ORS Electrolyte', price: '55' }, { icon: 'flask', name: 'Volini Pain Spray', price: '140' }].map(item => (
-              <View key={item.name} style={[styles.storeCard, { backgroundColor: C.navy2, borderColor: C.cardBorder }]}>
-                <View style={styles.storeCardTop}>
-                  <View style={[styles.storeImgWrap, { backgroundColor: C.navy3 }]}><Ionicons name={item.icon as any} size={24} color={C.teal} /></View>
-                  <Text style={[styles.storeTitle, { color: C.textMain }]} numberOfLines={2}>{item.name}</Text>
-                  <Text style={[styles.storePrice, { color: C.textMain }]}>₹{item.price}</Text>
-                </View>
-                <TouchableOpacity style={[styles.storeBtn, { backgroundColor: C.navy3 }]} onPress={() => router.push({ pathname: '/medicine', params: { addItem: item.name, tab: 'delivery' } })}>
-                  <Text style={[styles.storeBtnText, { color: C.teal }]}>Reorder</Text>
-                </TouchableOpacity>
-              </View>
-            ))}
-          </ScrollView>
+          {/* 2. Tele-Medic Phone Consult */}
+          <TouchableOpacity
+            style={[styles.actionCard, { backgroundColor: C.cardBg, borderColor: 'rgba(0,201,167,0.3)' }]}
+            activeOpacity={0.8}
+            onPress={() => router.push({ pathname: '/doctor', params: { tab: 'tele' } })}
+          >
+            <View style={[styles.cardIconWrap, { backgroundColor: 'rgba(0,201,167,0.15)' }]}>
+              <Ionicons name="call" size={24} color={C.teal} />
+            </View>
+            <Text style={styles.cardTitle}>Tele-Medic</Text>
+            <Text style={styles.cardSub}>Call doctor over phone</Text>
+          </TouchableOpacity>
+        </View>
+
+        <View style={styles.grid}>
+          {/* 3. Medicine Delivery */}
+          <TouchableOpacity
+            style={[styles.actionCard, { backgroundColor: C.cardBg, borderColor: 'rgba(255,179,0,0.3)' }]}
+            activeOpacity={0.8}
+            onPress={() => router.push('/medicine')}
+          >
+            <View style={[styles.cardIconWrap, { backgroundColor: 'rgba(255,179,0,0.15)' }]}>
+              <Ionicons name="cart" size={24} color={C.amber} />
+            </View>
+            <Text style={styles.cardTitle}>Pharmacy</Text>
+            <Text style={styles.cardSub}>Express drug delivery</Text>
+          </TouchableOpacity>
+
+          {/* 4. Book Appointments */}
+          <TouchableOpacity
+            style={[styles.actionCard, { backgroundColor: C.cardBg, borderColor: 'rgba(168,85,247,0.3)' }]}
+            activeOpacity={0.8}
+            onPress={() => router.push({ pathname: '/doctor', params: { tab: 'appointment' } })}
+          >
+            <View style={[styles.cardIconWrap, { backgroundColor: 'rgba(168,85,247,0.15)' }]}>
+              <Ionicons name="calendar" size={24} color="#A855F7" />
+            </View>
+            <Text style={styles.cardTitle}>Appointments</Text>
+            <Text style={styles.cardSub}>Book clinic & hospital slots</Text>
+          </TouchableOpacity>
+        </View>
+
+        <View style={styles.grid}>
+          {/* 5. Medical Vault & Records */}
+          <TouchableOpacity
+            style={[styles.actionCard, { backgroundColor: C.cardBg, borderColor: 'rgba(99,139,255,0.3)' }]}
+            activeOpacity={0.8}
+            onPress={() => router.push('/history')}
+          >
+            <View style={[styles.cardIconWrap, { backgroundColor: 'rgba(99,139,255,0.15)' }]}>
+              <Ionicons name="folder-open" size={24} color="#638BFF" />
+            </View>
+            <Text style={styles.cardTitle}>Medical Vault</Text>
+            <Text style={styles.cardSub}>Digital records & history</Text>
+          </TouchableOpacity>
+
+          {/* 6. Health Checker */}
+          <TouchableOpacity
+            style={[styles.actionCard, { backgroundColor: C.cardBg, borderColor: 'rgba(232,41,58,0.3)' }]}
+            activeOpacity={0.8}
+            onPress={() => router.push('/symptoms')}
+          >
+            <View style={[styles.cardIconWrap, { backgroundColor: 'rgba(232,41,58,0.15)' }]}>
+              <Ionicons name="git-network" size={24} color={C.red} />
+            </View>
+            <Text style={styles.cardTitle}>Symptom Checker</Text>
+            <Text style={styles.cardSub}>AI Triage & recommendations</Text>
+          </TouchableOpacity>
         </View>
 
       </ScrollView>
@@ -151,62 +195,25 @@ export default function HomeScreen() {
 
 const getStyles = (C: any, isDark: boolean) => StyleSheet.create({
   container: { flex: 1, backgroundColor: C.navy },
-  header: { padding: 22, paddingTop: 16, paddingBottom: 16 },
+  header: { padding: 22, paddingTop: 16, paddingBottom: 12 },
   headerTopRow: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' },
-  greeting: { fontSize: RF(13), color: C.textMuted, marginBottom: 4 },
-  userName: { fontSize: RF(24), fontWeight: '800', color: C.textMain },
-  avatarWrap: { width: 44, height: 44, borderRadius: 22, backgroundColor: C.teal, alignItems: 'center', justifyContent: 'center', borderWidth: 2, borderColor: 'rgba(255,255,255,0.2)' },
-
-  grid: { flexDirection: 'row', paddingHorizontal: 22, gap: 14, marginBottom: 14 },
-  actionCard: { flex: 1, borderRadius: 20, padding: 20, borderWidth: 1, height: 130, justifyContent: 'center', elevation: 6, shadowColor: '#000', shadowOffset: { width: 0, height: 6 }, shadowOpacity: 0.3, shadowRadius: 10 },
-  cardIconWrap: { width: 48, height: 48, borderRadius: 16, alignItems: 'center', justifyContent: 'center', marginBottom: 16 },
-  cardTitle: { fontSize: RF(16), fontWeight: '800', color: C.textMain },
-
-  sosGrid: { paddingHorizontal: 22, marginBottom: 24 },
-  sosCard: { borderRadius: 20, padding: 24, borderWidth: 1, alignItems: 'center', justifyContent: 'center', elevation: 8, shadowColor: '#000', shadowOffset: { width: 0, height: 6 }, shadowOpacity: isDark ? 0.4 : 0.15, shadowRadius: 10 },
-  sosRipple: { width: 64, height: 64, borderRadius: 32, backgroundColor: 'transparent', alignItems: 'center', justifyContent: 'center', marginBottom: 4 },
-  sosSub: { fontSize: RF(12), fontWeight: '700', textTransform: 'uppercase', marginTop: 6, letterSpacing: 0.5 },
-
-  triageBanner: { marginHorizontal: 22, backgroundColor: 'rgba(245,158,11,0.08)', borderWidth: 1, borderColor: 'rgba(245,158,11,0.3)', borderRadius: 20, padding: 20, flexDirection: 'row', alignItems: 'center', marginBottom: 30 },
-  triageBannerContent: { flex: 1, paddingRight: 16 },
-  triageTitle: { fontSize: RF(16), fontWeight: '800', color: '#E89020', marginBottom: 6 },
-  triageSub: { fontSize: RF(12), color: C.textMain, opacity: 0.8, lineHeight: 18 },
-  triageIconBadge: { width: 50, height: 50, borderRadius: 16, backgroundColor: 'rgba(245,158,11,0.12)', alignItems: 'center', justifyContent: 'center' },
-
-  sectionTitle: { fontSize: RF(18), fontWeight: '800', color: C.textMain },
-  seeAllText: { fontSize: RF(13), fontWeight: '700', color: C.teal },
-
-  storeCard: { width: 145, height: 210, borderWidth: 1, borderRadius: 16, padding: 16 },
-  storeCardTop: { flex: 1, alignItems: 'center' },
-  storeImgWrap: { width: 50, height: 50, borderRadius: 12, alignItems: 'center', justifyContent: 'center', marginBottom: 12 },
-  storeTitle: { fontSize: RF(13), fontWeight: '700', textAlign: 'center', marginBottom: 8, height: 36 },
-  storePrice: { fontSize: RF(16), fontWeight: '800' },
-  storeBtn: { paddingVertical: 10, borderRadius: 20, width: '100%', alignItems: 'center', marginTop: 'auto' },
-  storeBtnText: { fontSize: RF(12), fontWeight: '700' },
-
-  iotCard: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    padding: 16,
-    borderRadius: 20,
-    borderWidth: 1,
-    gap: 14
-  },
-  iotIconWrap: {
-    width: 44,
-    height: 44,
-    borderRadius: 14,
-    alignItems: 'center',
-    justifyContent: 'center'
-  },
-  iotTitle: {
-    fontSize: RF(15),
-    fontWeight: '800',
-    color: C.textMain,
-    marginBottom: 2
-  },
-  iotStatus: {
-    fontSize: RF(12),
-    fontWeight: '700'
-  },
+  greeting: { fontSize: RF(12), color: C.textMuted, marginBottom: 2 },
+  userName: { fontSize: RF(22), fontWeight: '800', color: C.textMain },
+  avatarWrap: { width: 42, height: 42, borderRadius: 21, backgroundColor: C.teal, alignItems: 'center', justifyContent: 'center', borderWidth: 2, borderColor: 'rgba(255,255,255,0.2)' },
+  emergencyBadge: { flexDirection: 'row', alignItems: 'center', gap: 12, padding: 12, borderRadius: 16, borderWidth: 1 },
+  bloodBadge: { width: 44, height: 44, borderRadius: 12, alignItems: 'center', justifyContent: 'center' },
+  bloodText: { color: '#fff', fontSize: RF(16), fontWeight: '900' },
+  badgeName: { fontSize: RF(14), fontWeight: '700' },
+  badgeSub: { fontSize: RF(11), marginTop: 2 },
+  donorPill: { paddingHorizontal: 6, paddingVertical: 2, borderRadius: 4 },
+  sectionHeading: { fontSize: RF(15), fontWeight: '800', paddingHorizontal: 22, marginBottom: 12, marginTop: 8 },
+  grid: { flexDirection: 'row', paddingHorizontal: 22, gap: 12, marginBottom: 12 },
+  actionCard: { flex: 1, borderRadius: 18, padding: 16, borderWidth: 1, height: 125, justifyContent: 'center' },
+  cardIconWrap: { width: 44, height: 44, borderRadius: 14, alignItems: 'center', justifyContent: 'center', marginBottom: 10 },
+  cardTitle: { fontSize: RF(14), fontWeight: '800', color: C.textMain },
+  cardSub: { fontSize: RF(10), color: C.textMuted, marginTop: 2 },
+  sosGrid: { paddingHorizontal: 22, marginBottom: 16 },
+  sosCard: { borderRadius: 20, padding: 20, borderWidth: 1, alignItems: 'center', justifyContent: 'center' },
+  sosRipple: { width: 56, height: 56, borderRadius: 28, backgroundColor: 'transparent', alignItems: 'center', justifyContent: 'center', marginBottom: 4 },
+  sosSub: { fontSize: RF(11), fontWeight: '700', textTransform: 'uppercase', marginTop: 4, letterSpacing: 0.5 },
 });

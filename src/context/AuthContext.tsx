@@ -7,6 +7,8 @@ interface AuthContextProps {
   logout: () => void;
   register: (name: string, phone: string, pass: string) => Promise<{ success: boolean; msg?: string }>;
   updateProfile: (name: string, passwordHash: string) => Promise<boolean>;
+  updateMedicalProfile: (updates: Partial<User>) => Promise<boolean>;
+  saveMedicalOnboarding: (details: Partial<User>) => Promise<boolean>;
   deleteProfile: () => Promise<boolean>;
 }
 
@@ -16,6 +18,8 @@ const AuthContext = createContext<AuthContextProps>({
   logout: () => {},
   register: async () => ({ success: false }),
   updateProfile: async () => false,
+  updateMedicalProfile: async () => false,
+  saveMedicalOnboarding: async () => false,
   deleteProfile: async () => false,
 });
 
@@ -60,6 +64,31 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     }
   };
 
+  const updateMedicalProfile = async (updates: Partial<User>) => {
+    if (!user) return false;
+    try {
+      const updated = await DB.Users.update(user.phone, updates);
+      setUser(updated);
+      return true;
+    } catch {
+      return false;
+    }
+  };
+
+  const saveMedicalOnboarding = async (details: Partial<User>) => {
+    if (!user) return false;
+    try {
+      const updated = await DB.Users.update(user.phone, {
+        ...details,
+        isOnboardingComplete: true
+      });
+      setUser(updated);
+      return true;
+    } catch {
+      return false;
+    }
+  };
+
   const deleteProfile = async () => {
     if (!user) return false;
     try {
@@ -76,7 +105,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   };
 
   return (
-    <AuthContext.Provider value={{ user, login, logout, register, updateProfile, deleteProfile }}>
+    <AuthContext.Provider value={{ user, login, logout, register, updateProfile, updateMedicalProfile, saveMedicalOnboarding, deleteProfile }}>
       {children}
     </AuthContext.Provider>
   );

@@ -52,6 +52,11 @@ export default function DoctorScreen() {
   }, [params, activeDocDispatch]);
 
   useEffect(() => {
+    if (params.tab === 'tele') setActiveTab('video');
+    if (params.tab === 'appointment') setActiveTab('clinic');
+  }, [params.tab]);
+
+  useEffect(() => {
     DB.Doctors.findMany().then(setDocs);
   }, []);
 

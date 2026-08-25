@@ -1,6 +1,6 @@
 import React, { createContext, useContext, useState, useEffect, useRef } from 'react';
 
-export type DispatchType = 'medicine' | 'ambulance' | 'medic' | 'doctor' | 'appointment';
+export type DispatchType = 'medicine' | 'ambulance' | 'medic' | 'doctor' | 'tele_medic' | 'appointment';
 
 export interface ChatMessage {
   id: string;

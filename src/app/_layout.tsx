@@ -238,9 +238,9 @@ function AuthWall() {
       <Animated.View style={[styles.authCard, { backgroundColor: C.navy2, borderColor: C.cardBorder, transform: [{ translateX: shakeAnim }] }]}>
         <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'center', gap: 10, marginBottom: 20 }}>
           <Ionicons name="pulse" size={32} color={C.red} />
-          <Text style={[styles.authTitle, { color: C.textMain }]}>RapidCare</Text>
+          <Text style={[styles.authTitle, { color: C.textMain }]}>Lifeline</Text>
         </View>
-        <Text style={[styles.authSub, { color: C.textMuted }]}>Login to access local emergency dispatch systems.</Text>
+        <Text style={[styles.authSub, { color: C.textMuted }]}>Unified healthcare & emergency dispatch platform.</Text>
 
         {error ? <Text style={styles.authError}>{error}</Text> : null}
 
@@ -387,7 +387,8 @@ function LayoutContent() {
         <Tabs.Screen name="symptoms" options={{ tabBarIcon: ({ focused }) => <TabIcon name={focused ? 'git-network' : 'git-network-outline'} label="Symptoms" focused={focused} activeColor={C.amber} /> }} />
         <Tabs.Screen name="doctor" options={{ tabBarIcon: ({ focused }) => <TabIcon name={focused ? 'medical' : 'medical-outline'} label="Docs" focused={focused} activeColor={'#638BFF'} /> }} />
         <Tabs.Screen name="medicine" options={{ tabBarIcon: ({ focused }) => <TabIcon name={focused ? 'cart' : 'cart-outline'} label="Store" focused={focused} activeColor={C.teal} /> }} />
-        <Tabs.Screen name="iot" options={{ tabBarIcon: ({ focused }) => <TabIcon name={focused ? 'hardware-chip' : 'hardware-chip-outline'} label="Device" focused={focused} activeColor={C.teal} /> }} />
+        <Tabs.Screen name="history" options={{ tabBarIcon: ({ focused }) => <TabIcon name={focused ? 'folder-open' : 'folder-open-outline'} label="Vault" focused={focused} activeColor={'#638BFF'} /> }} />
+        <Tabs.Screen name="onboarding" options={{ href: null }} />
         <Tabs.Screen name="profile" options={{ href: null }} />
       </Tabs>
 
