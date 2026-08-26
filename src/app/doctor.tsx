@@ -778,6 +778,6 @@ const getStyles = (C: any) => StyleSheet.create({
   pinIconWrap: { width: 40, height: 40, borderRadius: 20, alignItems: 'center', justifyContent: 'center' },
   pinTitle: { fontSize: RF(15), fontWeight: '800', color: C.textMain, marginBottom: 2 },
   pinSub: { fontSize: RF(12), color: C.textMuted },
-  pinAction: { backgroundColor: 'rgba(255,255,255,0.1)', paddingHorizontal: 12, paddingVertical: 6, borderRadius: 12 },
+  pinAction: { backgroundColor: C.navy3, paddingHorizontal: 12, paddingVertical: 6, borderRadius: 12, borderWidth: 1, borderColor: C.cardBorder },
   pinActionText: { color: C.textMain, fontSize: RF(11), fontWeight: '800' },
 });

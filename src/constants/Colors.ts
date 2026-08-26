@@ -1,6 +1,7 @@
 export const DarkColors = {
   // Backgrounds
   navy: '#0A1628',
+  navy1: '#0A1628',
   navy2: '#0F1F3D',
   navy3: '#162849',
   navy4: '#1E3562',
@@ -10,6 +11,8 @@ export const DarkColors = {
   redGlow: 'rgba(232,41,58,0.18)',
   teal: '#00C9A7',
   amber: '#F59E0B',
+  blue: '#3B82F6',
+  green: '#22C55E',
   // Text
   textMain: '#F0F4FF',
   textMuted: '#8A9DC9',
@@ -26,6 +29,7 @@ export const DarkColors = {
 export const LightColors = {
   // Backgrounds
   navy: '#F0F4FF',
+  navy1: '#F0F4FF',
   navy2: '#FFFFFF',
   navy3: '#E8EDF8',
   navy4: '#D5DEED',
@@ -35,10 +39,12 @@ export const LightColors = {
   redGlow: 'rgba(217,34,51,0.12)',
   teal: '#009E85',
   amber: '#D97706',
+  blue: '#2563EB',
+  green: '#16A34A',
   // Text
   textMain: '#0D1B36',
   textMuted: '#4A6080',
-  textDim: '#8A9DC9',
+  textDim: '#607090',
   // Cards
   cardBg: '#FFFFFF',
   cardBorder: 'rgba(0,0,0,0.08)',

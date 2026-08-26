@@ -7,12 +7,15 @@ import {
   ScrollView,
   TextInput,
   Modal,
-  Alert
+  Alert,
+  StatusBar
 } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
 import { useAuth } from '../context/AuthContext';
 import { useTheme } from '../context/ThemeContext';
 import { RF } from '../utils/Responsive';
+import { NavigationHeader } from '../components/NavigationHeader';
 
 interface VaultDoc {
   id: string;
@@ -93,35 +96,34 @@ export default function MedicalHistoryScreen() {
   });
 
   return (
-    <View style={{ flex: 1, backgroundColor: C.navy1 }}>
-      {/* Top Header */}
-      <View style={[styles.header, { backgroundColor: C.navy2, borderColor: C.cardBorder }]}>
-        <Text style={[styles.headerTitle, { color: C.textMain }]}>Medical Records & History</Text>
-        <Text style={[styles.headerSub, { color: C.textMuted }]}>
-          Fragmented health data unified into one encrypted personal vault
-        </Text>
+    <SafeAreaView style={{ flex: 1, backgroundColor: C.navy }}>
+      <StatusBar barStyle={isDark ? "light-content" : "dark-content"} backgroundColor={C.navy} />
+      
+      {/* Top Header with Back Button */}
+      <NavigationHeader title="Medical Records & History" subtitle="Unified encrypted personal vault" />
 
-        {/* Tab Switcher */}
+      {/* Tab Switcher */}
+      <View style={{ paddingHorizontal: 20, paddingTop: 4, paddingBottom: 10 }}>
         <View style={[styles.tabBar, { backgroundColor: C.navy3 }]}>
           <TouchableOpacity
             style={[styles.tabItem, activeTab === 'timeline' && { backgroundColor: C.blue }]}
             onPress={() => setActiveTab('timeline')}
           >
-            <Ionicons name="time" size={16} color={activeTab === 'timeline' ? '#fff' : C.textDim} />
-            <Text style={[styles.tabText, { color: activeTab === 'timeline' ? '#fff' : C.textDim }]}>Care Timeline</Text>
+            <Ionicons name="time" size={16} color={activeTab === 'timeline' ? '#fff' : C.textMuted} />
+            <Text style={[styles.tabText, { color: activeTab === 'timeline' ? '#fff' : C.textMuted }]}>Care Timeline</Text>
           </TouchableOpacity>
 
           <TouchableOpacity
             style={[styles.tabItem, activeTab === 'vault' && { backgroundColor: C.blue }]}
             onPress={() => setActiveTab('vault')}
           >
-            <Ionicons name="folder-open" size={16} color={activeTab === 'vault' ? '#fff' : C.textDim} />
-            <Text style={[styles.tabText, { color: activeTab === 'vault' ? '#fff' : C.textDim }]}>Health Vault ({docs.length})</Text>
+            <Ionicons name="folder-open" size={16} color={activeTab === 'vault' ? '#fff' : C.textMuted} />
+            <Text style={[styles.tabText, { color: activeTab === 'vault' ? '#fff' : C.textMuted }]}>Health Vault ({docs.length})</Text>
           </TouchableOpacity>
         </View>
       </View>
 
-      <ScrollView contentContainerStyle={{ padding: 16, paddingBottom: 40 }}>
+      <ScrollView contentContainerStyle={{ paddingHorizontal: 20, paddingBottom: 140 }}>
         {/* TAB 1: Care Timeline */}
         {activeTab === 'timeline' && (
           <View>
@@ -142,7 +144,7 @@ export default function MedicalHistoryScreen() {
             </ScrollView>
 
             {filteredHistory.map((item) => (
-              <View key={item.id} style={[styles.historyCard, { backgroundColor: C.navy2, borderColor: C.cardBorder }]}>
+              <View key={item.id} style={[styles.historyCard, { backgroundColor: C.cardBg, borderColor: C.cardBorder }]}>
                 <View style={{ flexDirection: 'row', alignItems: 'center', gap: 12 }}>
                   <View
                     style={[
@@ -197,7 +199,7 @@ export default function MedicalHistoryScreen() {
             </TouchableOpacity>
 
             {docs.map((doc) => (
-              <View key={doc.id} style={[styles.docCard, { backgroundColor: C.navy2, borderColor: C.cardBorder }]}>
+              <View key={doc.id} style={[styles.docCard, { backgroundColor: C.cardBg, borderColor: C.cardBorder }]}>
                 <View style={{ flexDirection: 'row', alignItems: 'center', gap: 12 }}>
                   <View style={[styles.docIcon, { backgroundColor: 'rgba(99,139,255,0.15)' }]}>
                     <Ionicons
@@ -224,7 +226,7 @@ export default function MedicalHistoryScreen() {
       {/* Upload Modal */}
       <Modal visible={modalVisible} transparent animationType="slide">
         <View style={styles.modalOverlay}>
-          <View style={[styles.modalCard, { backgroundColor: C.navy2, borderColor: C.cardBorder }]}>
+          <View style={[styles.modalCard, { backgroundColor: C.cardBg, borderColor: C.cardBorder }]}>
             <Text style={[styles.modalTitle, { color: C.textMain }]}>Add Medical Record</Text>
 
             <Text style={[styles.modalLabel, { color: C.textMuted }]}>Document Title</Text>
@@ -262,7 +264,7 @@ export default function MedicalHistoryScreen() {
             />
 
             <View style={{ flexDirection: 'row', gap: 12, marginTop: 20 }}>
-              <TouchableOpacity style={[styles.cancelBtn, { borderColor: C.cardBorder }]} onPress={() => setModalVisible(false)}>
+              <TouchableOpacity style={[styles.cancelBtn, { borderColor: C.cardBorder, backgroundColor: C.navy3 }]} onPress={() => setModalVisible(false)}>
                 <Text style={{ color: C.textMain }}>Cancel</Text>
               </TouchableOpacity>
               <TouchableOpacity style={[styles.saveBtn, { backgroundColor: C.blue }]} onPress={handleAddDocument}>
@@ -272,21 +274,18 @@ export default function MedicalHistoryScreen() {
           </View>
         </View>
       </Modal>
-    </View>
+    </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
-  header: { padding: 16, paddingTop: 50, borderBottomWidth: 1 },
-  headerTitle: { fontSize: RF(18), fontWeight: '700' },
-  headerSub: { fontSize: RF(11), marginTop: 4 },
-  tabBar: { flexDirection: 'row', borderRadius: 10, padding: 4, marginTop: 14 },
-  tabItem: { flex: 1, flexDirection: 'row', alignItems: 'center', justifyContent: 'center', gap: 6, paddingVertical: 8, borderRadius: 8 },
+  tabBar: { flexDirection: 'row', borderRadius: 12, padding: 4 },
+  tabItem: { flex: 1, flexDirection: 'row', alignItems: 'center', justifyContent: 'center', gap: 6, paddingVertical: 10, borderRadius: 10 },
   tabText: { fontSize: RF(12), fontWeight: '700' },
-  filterChip: { paddingHorizontal: 14, paddingVertical: 6, borderRadius: 20, borderWidth: 1, marginRight: 8 },
+  filterChip: { paddingHorizontal: 14, paddingVertical: 8, borderRadius: 20, borderWidth: 1, marginRight: 8 },
   filterText: { fontSize: RF(12), fontWeight: '600' },
-  historyCard: { padding: 14, borderRadius: 14, borderWidth: 1, marginBottom: 12 },
-  iconWrap: { width: 42, height: 42, borderRadius: 10, alignItems: 'center', justifyContent: 'center' },
+  historyCard: { padding: 14, borderRadius: 16, borderWidth: 1, marginBottom: 12 },
+  iconWrap: { width: 42, height: 42, borderRadius: 12, alignItems: 'center', justifyContent: 'center' },
   itemTitle: { fontSize: RF(13), fontWeight: '700', flex: 1, marginRight: 6 },
   itemSub: { fontSize: RF(11), marginTop: 2 },
   itemDate: { fontSize: RF(10), marginTop: 2 },
@@ -294,15 +293,15 @@ const styles = StyleSheet.create({
   statusText: { fontSize: RF(10), fontWeight: '700' },
   divider: { height: 1, marginVertical: 10 },
   itemDetails: { fontSize: RF(11) },
-  addDocBtn: { flexDirection: 'row', alignItems: 'center', justifyContent: 'center', gap: 8, padding: 14, borderRadius: 12, marginBottom: 16 },
+  addDocBtn: { flexDirection: 'row', alignItems: 'center', justifyContent: 'center', gap: 8, padding: 14, borderRadius: 14, marginBottom: 16 },
   addDocText: { color: '#fff', fontSize: RF(13), fontWeight: '700' },
-  docCard: { padding: 14, borderRadius: 14, borderWidth: 1, marginBottom: 12 },
-  docIcon: { width: 44, height: 44, borderRadius: 10, alignItems: 'center', justifyContent: 'center' },
+  docCard: { padding: 14, borderRadius: 16, borderWidth: 1, marginBottom: 12 },
+  docIcon: { width: 44, height: 44, borderRadius: 12, alignItems: 'center', justifyContent: 'center' },
   docTitle: { fontSize: RF(13), fontWeight: '700' },
   docSub: { fontSize: RF(11), marginTop: 2 },
   docNotes: { fontSize: RF(11), marginTop: 4, fontWeight: '500' },
   modalOverlay: { flex: 1, backgroundColor: 'rgba(0,0,0,0.6)', justifyContent: 'center', padding: 20 },
-  modalCard: { padding: 20, borderRadius: 16, borderWidth: 1 },
+  modalCard: { padding: 20, borderRadius: 20, borderWidth: 1 },
   modalTitle: { fontSize: RF(16), fontWeight: '700', marginBottom: 14 },
   modalLabel: { fontSize: RF(12), fontWeight: '600', marginBottom: 4 },
   modalInput: { height: 44, borderRadius: 10, borderWidth: 1, paddingHorizontal: 12, fontSize: RF(13) },
