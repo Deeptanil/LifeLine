@@ -27,8 +27,8 @@ export interface User {
 let mockUsers: User[] = [
   {
     id: '100',
-    name: 'Sheersha',
-    phone: '9686566111',
+    name: 'Deeptanil',
+    phone: '7760343724',
     passwordHash: '12345678',
     age: 26,
     gender: 'Male',

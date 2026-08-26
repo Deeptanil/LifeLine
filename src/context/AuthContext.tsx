@@ -27,7 +27,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const [user, setUser] = useState<User | null>(null);
 
   useEffect(() => {
-      setUser({ id: '100', name: 'Sheersha', phone: '9686566111', passwordHash: '12345678' });
+      setUser({ id: '100', name: 'Deeptanil', phone: '7760343724', passwordHash: '12345678' });
   }, []);
 
   const login = async (phone: string, pass: string) => {

@@ -9,7 +9,7 @@
     "userInterfaceStyle": "automatic",
     "ios": {
       "icon": "./assets/expo.icon",
-      "bundleIdentifier": "com.sheersha.Lifeline",
+      "bundleIdentifier": "com.deeptanil.Lifeline",
       "infoPlist": {
         "ITSAppUsesNonExemptEncryption": false
       }
@@ -22,7 +22,7 @@
         "monochromeImage": "./assets/images/android-icon-monochrome.png"
       },
       "predictiveBackGestureEnabled": false,
-      "package": "com.sheersha.Lifeline",
+      "package": "com.deeptanil.Lifeline",
       "permissions": [
         "INTERNET",
         "ACCESS_FINE_LOCATION",
@@ -68,6 +68,6 @@
         "projectId": "3a822a99-7c84-4230-9e9f-577b8019c848"
       }
     },
-    "owner": "sheersha"
+    "owner": "deeptanil"
   }
 }
