@@ -1,5 +1,8 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { User, DB } from '../db/database';
+
+const STORAGE_KEY = '@lifeline_user';
 
 interface AuthContextProps {
   user: User | null;
@@ -26,16 +29,43 @@ const AuthContext = createContext<AuthContextProps>({
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const [user, setUser] = useState<User | null>(null);
 
+  // Restore persisted user on app start
   useEffect(() => {
-      setUser({ id: '100', name: 'Deeptanil', phone: '7760343724', passwordHash: '12345678' });
+    const restoreUser = async () => {
+      try {
+        const stored = await AsyncStorage.getItem(STORAGE_KEY);
+        if (stored) {
+          setUser(JSON.parse(stored));
+        } else {
+          // Default demo user — includes full medical profile
+          const defaultUser = await DB.Users.findByPhone('7760343724');
+          if (defaultUser) {
+            setUser(defaultUser);
+            await AsyncStorage.setItem(STORAGE_KEY, JSON.stringify(defaultUser));
+          }
+        }
+      } catch {
+        // Fallback: load default demo user without persistence
+        const defaultUser = await DB.Users.findByPhone('7760343724');
+        if (defaultUser) setUser(defaultUser);
+      }
+    };
+    restoreUser();
   }, []);
+
+  const persist = async (u: User) => {
+    setUser(u);
+    try {
+      await AsyncStorage.setItem(STORAGE_KEY, JSON.stringify(u));
+    } catch {}
+  };
 
   const login = async (phone: string, pass: string) => {
     try {
       const dbUser = await DB.Users.findByPhone(phone);
       if (!dbUser) return { success: false, msg: 'Account not found.' };
       if (dbUser.passwordHash !== pass) return { success: false, msg: 'Incorrect password.' };
-      setUser(dbUser);
+      await persist(dbUser);
       return { success: true };
     } catch {
       return { success: false, msg: 'System error.' };
@@ -45,22 +75,22 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const register = async (name: string, phone: string, pass: string) => {
     try {
       const newUser = await DB.Users.create({ name, phone, passwordHash: pass });
-      setUser(newUser);
+      await persist(newUser);
       return { success: true };
     } catch (e: any) {
       if (e.message === 'Exists') return { success: false, msg: 'Phone number already registered.' };
-      return { success: false, msg: 'Failed to create account.' }; 
+      return { success: false, msg: 'Failed to create account.' };
     }
   };
 
   const updateProfile = async (name: string, pass: string) => {
     if (!user) return false;
     try {
-       const u = await DB.Users.update(user.phone, { name, passwordHash: pass });
-       setUser(u);
-       return true;
+      const u = await DB.Users.update(user.phone, { name, passwordHash: pass });
+      await persist(u);
+      return true;
     } catch {
-       return false;
+      return false;
     }
   };
 
@@ -68,7 +98,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     if (!user) return false;
     try {
       const updated = await DB.Users.update(user.phone, updates);
-      setUser(updated);
+      await persist(updated);
       return true;
     } catch {
       return false;
@@ -82,7 +112,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         ...details,
         isOnboardingComplete: true
       });
-      setUser(updated);
+      await persist(updated);
       return true;
     } catch {
       return false;
@@ -92,16 +122,20 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const deleteProfile = async () => {
     if (!user) return false;
     try {
-       await DB.Users.delete(user.phone);
-       setUser(null);
-       return true;
+      await DB.Users.delete(user.phone);
+      setUser(null);
+      await AsyncStorage.removeItem(STORAGE_KEY);
+      return true;
     } catch {
-       return false;
+      return false;
     }
   };
 
-  const logout = () => {
+  const logout = async () => {
     setUser(null);
+    try {
+      await AsyncStorage.removeItem(STORAGE_KEY);
+    } catch {}
   };
 
   return (
