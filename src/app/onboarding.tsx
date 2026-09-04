@@ -12,6 +12,8 @@ import {
 } from 'react-native';
 import { useRouter } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import { NavigationHeader } from '../components/NavigationHeader';
 import { useAuth } from '../context/AuthContext';
 import { useTheme } from '../context/ThemeContext';
 import { RF } from '../utils/Responsive';
@@ -90,22 +92,23 @@ export default function OnboardingScreen() {
   };
 
   return (
-    <KeyboardAvoidingView
-      style={{ flex: 1, backgroundColor: C.navy1 }}
-      behavior={Platform.OS === 'ios' ? 'padding' : undefined}
-    >
-      <ScrollView contentContainerStyle={{ padding: 20, paddingTop: 60, paddingBottom: 60 }}>
+    <SafeAreaView style={{ flex: 1, backgroundColor: C.navy1 }}>
+      <NavigationHeader title="Emergency Medical Setup" subtitle={`Step ${step} of 3`} />
+      <KeyboardAvoidingView
+        style={{ flex: 1 }}
+        behavior={Platform.OS === 'ios' ? 'padding' : undefined}
+      >
+        <ScrollView contentContainerStyle={{ padding: 20, paddingTop: 10, paddingBottom: 60 }}>
 
-        {/* Header Badge */}
-        <View style={styles.headerBox}>
-          <View style={[styles.headerIcon, { backgroundColor: 'rgba(232,41,58,0.15)' }]}>
-            <Ionicons name="shield-checkmark" size={28} color={C.red} />
+          {/* Header Badge */}
+          <View style={styles.headerBox}>
+            <View style={[styles.headerIcon, { backgroundColor: 'rgba(232,41,58,0.15)' }]}>
+              <Ionicons name="shield-checkmark" size={28} color={C.red} />
+            </View>
+            <Text style={[styles.headerSub, { color: C.textMuted }]}>
+              {step === 1 ? 'Vitals & Allergies' : step === 2 ? 'Emergency Contacts' : 'Insurance & Preferences'}
+            </Text>
           </View>
-          <Text style={[styles.headerTitle, { color: C.textMain }]}>Emergency Medical Setup</Text>
-          <Text style={[styles.headerSub, { color: C.textMuted }]}>
-            Step {step} of 3 · {step === 1 ? 'Vitals & Allergies' : step === 2 ? 'Emergency Contacts' : 'Insurance & Preferences'}
-          </Text>
-        </View>
 
         {/* Progress Bar */}
         <View style={[styles.progressTrack, { backgroundColor: C.navy3 }]}>
@@ -191,7 +194,7 @@ export default function OnboardingScreen() {
               placeholderTextColor={C.textDim}
             />
 
-            <TouchableOpacity style={[styles.primaryBtn, { backgroundColor: C.red }]} onPress={() => setStep(2)}>
+            <TouchableOpacity style={[styles.primaryBtn, { backgroundColor: C.red, marginTop: 24 }]} onPress={() => setStep(2)}>
               <Text style={styles.primaryBtnText}>Next: Emergency Contacts</Text>
               <Ionicons name="arrow-forward" size={18} color="#fff" />
             </TouchableOpacity>
@@ -336,6 +339,7 @@ export default function OnboardingScreen() {
 
       </ScrollView>
     </KeyboardAvoidingView>
+    </SafeAreaView>
   );
 }
 
@@ -379,7 +383,7 @@ const styles = StyleSheet.create({
     paddingVertical: 16,
     paddingHorizontal: 20,
     borderRadius: 14,
-    marginTop: 20,
+    marginTop: 0,
   },
   primaryBtnText: { color: '#fff', fontSize: RF(14), fontWeight: '800', flexShrink: 1, textAlign: 'center' },
 
