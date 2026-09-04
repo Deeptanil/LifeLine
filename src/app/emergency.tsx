@@ -117,32 +117,6 @@ export default function EmergencyScreen() {
     ).start();
   }, []);
 
-  const acknowledgeIot = () => {
-    console.log("📡 Sending IoT Acknowledgment...");
-
-    // 5-second timeout to prevent getting stuck
-    const controller = new AbortController();
-    const timeoutMsg = setTimeout(() => {
-      controller.abort();
-      console.warn("⚠️ IoT Request TIMEOUT");
-    }, 5000);
-
-    fetch("http://192.168.4.1/iot/acknowledge", {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ acknowledged: true }),
-      signal: controller.signal
-    })
-      .then(res => {
-        clearTimeout(timeoutMsg);
-        console.log("✅ IoT Acknowledge SUCCESS:", res.status);
-      })
-      .catch((err) => {
-        clearTimeout(timeoutMsg);
-        console.log("❌ IoT Acknowledge FAILED (Expected if hardware not linked):", err.message);
-      });
-  };
-
   const triggerAmbulanceDispatch = (hospitalName: string) => {
     startDispatch({
       type: 'ambulance',
@@ -152,7 +126,6 @@ export default function EmergencyScreen() {
       data: { hospital: hospitalName }
     });
 
-    acknowledgeIot();
     setModalState('none');
     setSearchQuery('');
   };
@@ -167,7 +140,6 @@ export default function EmergencyScreen() {
       data: { symptoms: medicSymptoms }
     });
 
-    acknowledgeIot();
     setModalState('none');
     setMedicSymptoms('');
   };
@@ -254,7 +226,6 @@ export default function EmergencyScreen() {
                 else if (s.label === 'Medic Home') setModalState('medic_symptoms');
                 else if (s.label === 'Doctor Call') router.push('/doctor');
                 else if (s.label === 'Alert Family') {
-                  acknowledgeIot();
                   setCustomAlert({ title: 'Alert Dispatched', sub: 'Your emergency contacts have been notified with your live coordinates.' });
                 }
                 else if (s.label === 'Pharmacy') router.push('/medicine');

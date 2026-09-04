@@ -47,32 +47,34 @@ export default function HomeScreen() {
           </View>
         </View>
 
-        {/* Emergency Medical ID Badge Banner */}
-        <View style={{ paddingHorizontal: 22, marginBottom: 16 }}>
-          <TouchableOpacity
-            style={[styles.emergencyBadge, { backgroundColor: C.navy2, borderColor: C.cardBorder }]}
-            onPress={() => router.push(user?.isOnboardingComplete ? '/profile' : '/onboarding')}
-            activeOpacity={0.9}
-          >
-            <View style={[styles.bloodBadge, { backgroundColor: C.red }]}>
-              <Text style={styles.bloodText}>{user?.bloodGroup || 'O+'}</Text>
-            </View>
-            <View style={{ flex: 1 }}>
-              <View style={{ flexDirection: 'row', alignItems: 'center', gap: 6 }}>
-                <Text style={[styles.badgeName, { color: C.textMain }]}>{user?.name || 'Complete Setup'}</Text>
-                {user?.organDonor ? (
-                  <View style={[styles.donorPill, { backgroundColor: 'rgba(0,201,167,0.15)' }]}>
-                    <Text style={{ color: C.green, fontSize: RF(10), fontWeight: '700' }}>Organ Donor</Text>
-                  </View>
-                ) : null}
+        {/* Emergency Medical ID Badge Banner - Hidden when onboarding is completed */}
+        {!user?.isOnboardingComplete && (
+          <View style={{ paddingHorizontal: 22, marginBottom: 16 }}>
+            <TouchableOpacity
+              style={[styles.emergencyBadge, { backgroundColor: C.navy2, borderColor: C.cardBorder }]}
+              onPress={() => router.push('/onboarding')}
+              activeOpacity={0.9}
+            >
+              <View style={[styles.bloodBadge, { backgroundColor: C.red }]}>
+                <Text style={styles.bloodText}>{user?.bloodGroup || 'O+'}</Text>
               </View>
-              <Text style={[styles.badgeSub, { color: C.textMuted }]}>
-                {user?.allergies ? `Allergies: ${user.allergies}` : 'Tap to complete emergency setup'}
-              </Text>
-            </View>
-            <Ionicons name="chevron-forward" size={20} color={C.textDim} />
-          </TouchableOpacity>
-        </View>
+              <View style={{ flex: 1 }}>
+                <View style={{ flexDirection: 'row', alignItems: 'center', gap: 6 }}>
+                  <Text style={[styles.badgeName, { color: C.textMain }]}>{user?.name || 'Complete Setup'}</Text>
+                  {user?.organDonor ? (
+                    <View style={[styles.donorPill, { backgroundColor: 'rgba(0,201,167,0.15)' }]}>
+                      <Text style={{ color: C.green, fontSize: RF(10), fontWeight: '700' }}>Organ Donor</Text>
+                    </View>
+                  ) : null}
+                </View>
+                <Text style={[styles.badgeSub, { color: C.textMuted }]}>
+                  {user?.allergies ? `Allergies: ${user.allergies}` : 'Tap to complete emergency setup'}
+                </Text>
+              </View>
+              <Ionicons name="chevron-forward" size={20} color={C.textDim} />
+            </TouchableOpacity>
+          </View>
+        )}
 
         {/* SOS Emergency Dispatch Button */}
         <View style={styles.sosGrid}>

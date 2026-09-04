@@ -23,21 +23,8 @@ export interface DispatchItem {
   isRatingStar?: boolean;
 }
 
-export interface IotLog {
-  id: string;
-  emoji: string;
-  text: string;
-  time: string;
-  dotColor: string;
-}
-
 interface DispatchContextProps {
   dispatches: DispatchItem[];
-  iotOnline: boolean;
-  setIotOnline: (online: boolean) => void;
-  iotLogs: IotLog[];
-  addIotLog: (emoji: string, text: string, dotColor: string) => void;
-  clearIotLogs: () => void;
   startDispatch: (payload: Omit<DispatchItem, 'id' | 'stage'>) => void;
   updateDispatchStage: (id: string, stage: number) => void;
   cancelDispatch: (id: string) => void;
@@ -47,11 +34,6 @@ interface DispatchContextProps {
 
 const DispatchContext = createContext<DispatchContextProps>({
   dispatches: [],
-  iotOnline: false,
-  setIotOnline: () => {},
-  iotLogs: [],
-  addIotLog: () => {},
-  clearIotLogs: () => {},
   startDispatch: () => {},
   updateDispatchStage: () => {},
   cancelDispatch: () => {},
@@ -61,16 +43,6 @@ const DispatchContext = createContext<DispatchContextProps>({
 
 export const DispatchProvider = ({ children }: { children: React.ReactNode }) => {
   const [dispatches, setDispatches] = useState<DispatchItem[]>([]);
-  const [iotOnline, setIotOnline] = useState(false);
-  const [iotLogs, setIotLogs] = useState<IotLog[]>([
-    {
-      id: "init_1",
-      emoji: "🟢",
-      text: "IoT System Initialized",
-      time: new Date().toLocaleTimeString("en-IN", { hour: "2-digit", minute: "2-digit" }),
-      dotColor: "#00C9A7",
-    }
-  ]);
   const timeoutsArray = useRef<{ id: ReturnType<typeof setTimeout>, dispatchId: string }[]>([]);
 
   const updateDispatchStage = (id: string, stage: number) => {
@@ -211,27 +183,9 @@ export const DispatchProvider = ({ children }: { children: React.ReactNode }) =>
     }));
   };
 
-  const addIotLog = (emoji: string, text: string, dotColor: string) => {
-    const newLog: IotLog = {
-      id: Math.random().toString(36).substring(7).toUpperCase(),
-      emoji,
-      text,
-      time: new Date().toLocaleTimeString("en-IN", { hour: "2-digit", minute: "2-digit" }),
-      dotColor,
-    };
-    setIotLogs(prev => [newLog, ...prev].slice(0, 20));
-  };
-
-  const clearIotLogs = () => setIotLogs([]);
-
   return (
     <DispatchContext.Provider value={{ 
       dispatches, 
-      iotOnline, 
-      setIotOnline, 
-      iotLogs, 
-      addIotLog, 
-      clearIotLogs,
       startDispatch, 
       updateDispatchStage, 
       cancelDispatch, 
