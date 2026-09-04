@@ -317,7 +317,7 @@ export default function EmergencyScreen() {
             )}
 
             {activeDispatch.stage === 2 && (
-              <View style={{ ...StyleSheet.absoluteFillObject, backgroundColor: C.navy, alignItems: 'center', justifyContent: 'center', padding: 22 }}>
+              <View style={{ ...StyleSheet.absoluteFill, backgroundColor: C.navy, alignItems: 'center', justifyContent: 'center', padding: 22 }}>
                 <Ionicons name="checkmark-circle" size={80} color={C.teal} style={{ marginBottom: 20 }} />
                 <Text style={{ fontSize: RF(28), fontWeight: '800', color: C.textMain, marginBottom: 8 }}>Successfully Arrived</Text>
                 <Text style={{ fontSize: RF(14), color: C.textMuted, textAlign: 'center', marginBottom: 40, lineHeight: 22 }}>
@@ -433,7 +433,7 @@ export default function EmergencyScreen() {
 
             {/* Inline Custom Alert Overlay to fix iOS Modal Nesting */}
             {!!customAlert && isTrackerOpen && (
-              <View style={[StyleSheet.absoluteFillObject, styles.alertBg, { zIndex: 100, borderRadius: 30 }]}>
+              <View style={[StyleSheet.absoluteFill, styles.alertBg, { zIndex: 100, borderRadius: 30 }]}>
                 <View style={styles.alertBox}>
                   <Text style={styles.alertTitle}>{customAlert.title}</Text>
                   <Text style={styles.alertSub}>{customAlert.sub}</Text>
@@ -547,7 +547,7 @@ export default function EmergencyScreen() {
 
             {/* Inline Custom Alert Overlay to fix SOS Interaction */}
             {!!customAlert && modalState === 'sos_select' && (
-              <View style={[StyleSheet.absoluteFillObject, styles.alertBg, { zIndex: 100, borderRadius: 24, margin: -1 }]}>
+              <View style={[StyleSheet.absoluteFill, styles.alertBg, { zIndex: 100, borderRadius: 24, margin: -1 }]}>
                 <View style={styles.alertBox}>
                   <Text style={styles.alertTitle}>{customAlert.title}</Text>
                   <Text style={styles.alertSub}>{customAlert.sub}</Text>

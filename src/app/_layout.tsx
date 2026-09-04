@@ -441,7 +441,7 @@ const styles = StyleSheet.create({
   floatingBubbleStar: { position: 'absolute', top: 140, right: 20, width: 60, height: 60, borderRadius: 30, backgroundColor: '#FFD166', alignItems: 'center', justifyContent: 'center', shadowColor: '#FFD166', shadowOffset: { width: 0, height: 6 }, shadowOpacity: 0.5, shadowRadius: 10, elevation: 12 },
   bubbleStatusPulse: { position: 'absolute', top: 4, right: 4, width: 12, height: 12, borderRadius: 6, backgroundColor: '#00C9A7', borderWidth: 2 },
 
-  authContainer: { ...StyleSheet.absoluteFillObject, zIndex: 999, justifyContent: 'center', padding: 22 },
+  authContainer: { ...StyleSheet.absoluteFill, zIndex: 999, justifyContent: 'center', padding: 22 },
   authCard: { borderWidth: 1, padding: 28, borderRadius: 24, shadowColor: '#000', shadowOffset: { width: 0, height: 10 }, shadowOpacity: 0.4, shadowRadius: 20, elevation: 20 },
   authTitle: { fontSize: RF(26), fontWeight: '800', letterSpacing: -0.5 },
   authSub: { fontSize: RF(13), textAlign: 'center', marginBottom: 30 },

@@ -264,7 +264,7 @@ export default function DoctorScreen() {
             <View style={styles.docRow}>
               <View style={styles.docAvLarge}><Ionicons name="person" size={28} color="#fff" /></View>
               <View style={{ flex: 1 }}>
-                 <Text style={styles.bookingTitle}>Talk Now</Text>
+                 <Text style={styles.docNameTitle}>{doc.name}</Text>
                  <Text style={styles.docSpecSub}>{doc.spec}</Text>
                  
                  <View style={{ flexDirection: 'row', gap: 12, marginTop: 6, alignItems: 'center' }}>
@@ -384,7 +384,7 @@ export default function DoctorScreen() {
 
             {/* Inline Alert for Booking Modal */}
             {!!customAlert && bookingModal && (
-               <View style={[StyleSheet.absoluteFillObject, styles.alertBg, { zIndex: 100, borderTopLeftRadius: 24, borderTopRightRadius: 24 }]}>
+               <View style={[StyleSheet.absoluteFill, styles.alertBg, { zIndex: 100, borderTopLeftRadius: 24, borderTopRightRadius: 24 }]}>
                   <View style={styles.alertBox}>
                     <Text style={[styles.alertTitle, { color: C.textMain }]}>{customAlert.title}</Text>
                     <Text style={[styles.alertSub, { color: C.textMuted }]}>{customAlert.sub}</Text>
@@ -536,7 +536,7 @@ export default function DoctorScreen() {
 
              {/* Inline Alert for Chat Modal */}
              {!!customAlert && isChatOpen && (
-               <View style={[StyleSheet.absoluteFillObject, styles.alertBg, { zIndex: 100 }]}>
+               <View style={[StyleSheet.absoluteFill, styles.alertBg, { zIndex: 100 }]}>
                   <View style={styles.alertBox}>
                     <Text style={[styles.alertTitle, { color: C.textMain }]}>{customAlert.title}</Text>
                     <Text style={[styles.alertSub, { color: C.textMuted }]}>{customAlert.sub}</Text>
@@ -670,7 +670,7 @@ export default function DoctorScreen() {
 
             {/* Inline Alert for Profile Modal */}
             {!!customAlert && profileModal && (
-               <View style={[StyleSheet.absoluteFillObject, styles.alertBg, { zIndex: 100, borderTopLeftRadius: 24, borderTopRightRadius: 24 }]}>
+               <View style={[StyleSheet.absoluteFill, styles.alertBg, { zIndex: 100, borderTopLeftRadius: 24, borderTopRightRadius: 24 }]}>
                   <View style={styles.alertBox}>
                     <Text style={[styles.alertTitle, { color: C.textMain }]}>{customAlert.title}</Text>
                     <Text style={[styles.alertSub, { color: C.textMuted }]}>{customAlert.sub}</Text>

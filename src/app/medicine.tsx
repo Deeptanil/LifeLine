@@ -254,7 +254,7 @@ export default function MedicineScreen() {
               )}
 
              {stageNum === 2 && (
-                <View style={{ ...StyleSheet.absoluteFillObject, backgroundColor: C.navy, alignItems: 'center', justifyContent: 'center', padding: 22 }}>
+                <View style={{ ...StyleSheet.absoluteFill, backgroundColor: C.navy, alignItems: 'center', justifyContent: 'center', padding: 22 }}>
                   <Ionicons name="checkmark-done-circle" size={80} color={C.teal} style={{ marginBottom: 20 }} />
                   <Text style={{ fontSize: RF(28), fontWeight: '800', color: C.textMain, marginBottom: 8 }}>Order Delivered</Text>
                   <Text style={{ fontSize: RF(13), color: C.textMuted, textAlign: 'center', marginBottom: 40, lineHeight: 22 }}>
@@ -350,7 +350,7 @@ export default function MedicineScreen() {
               )}
 
               {!!customAlert && isTrackerOpen && (
-                 <View style={[StyleSheet.absoluteFillObject, styles.alertBg, { zIndex: 100 }]}>
+                 <View style={[StyleSheet.absoluteFill, styles.alertBg, { zIndex: 100 }]}>
                     <View style={[styles.alertBox, { backgroundColor: C.cardBg, borderColor: C.cardBorder }]}>
                       <Text style={[styles.alertTitle, { color: C.textMain }]}>{customAlert.title}</Text>
                       <Text style={[styles.alertSub, { color: C.textMuted }]}>{customAlert.sub}</Text>

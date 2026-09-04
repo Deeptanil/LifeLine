@@ -71,7 +71,7 @@ export const DispatchProvider = ({ children }: { children: React.ReactNode }) =>
       dotColor: "#00C9A7",
     }
   ]);
-  const timeoutsArray = useRef<{ id: NodeJS.Timeout, dispatchId: string }[]>([]);
+  const timeoutsArray = useRef<{ id: ReturnType<typeof setTimeout>, dispatchId: string }[]>([]);
 
   const updateDispatchStage = (id: string, stage: number) => {
     setDispatches(prev => prev.map(d => d.id === id ? { ...d, stage } : d));
