@@ -1,7 +1,7 @@
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import React, { useState, useEffect, useRef } from 'react';
 import {
-  ActivityIndicator, Linking, Modal, ScrollView, StatusBar, TextInput,
+  ActivityIndicator, Linking, ScrollView, StatusBar, TextInput,
   StyleSheet, Text, TouchableOpacity, View, Image, Dimensions, Platform, Animated
 } from 'react-native';
 import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
@@ -12,6 +12,7 @@ import { useTheme } from '../context/ThemeContext';
 import { NavigationHeader } from '../components/NavigationHeader';
 import { DB } from '../db/database';
 import { RF } from '../utils/Responsive';
+import { Modal } from '../components/Modal';
 
 const { width: RAW_WIDTH } = Dimensions.get('window');
 const SCREEN_WIDTH = Platform.OS === 'web' ? Math.min(RAW_WIDTH, 420) : RAW_WIDTH;

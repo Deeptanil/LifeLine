@@ -1,7 +1,7 @@
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import React, { useEffect, useState, useRef } from 'react';
 import {
-  KeyboardAvoidingView, Modal, Platform, ScrollView, StatusBar, StyleSheet,
+  KeyboardAvoidingView, Platform, ScrollView, StatusBar, StyleSheet,
   Text, TouchableOpacity, View, ActivityIndicator, TextInput, Linking
 } from 'react-native';
 import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
@@ -11,6 +11,7 @@ import { useTheme } from '../context/ThemeContext';
 import { NavigationHeader } from '../components/NavigationHeader';
 import { DB } from '../db/database';
 import { RF } from '../utils/Responsive';
+import { Modal } from '../components/Modal';
 
 export default function DoctorScreen() {
   const params = useLocalSearchParams();

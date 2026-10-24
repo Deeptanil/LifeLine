@@ -6,13 +6,13 @@ import {
   TouchableOpacity,
   ScrollView,
   TextInput,
-  Modal,
   Alert,
   StatusBar
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
 import { useAuth } from '../context/AuthContext';
+import { Modal } from '../components/Modal';
 import { useTheme } from '../context/ThemeContext';
 import { RF } from '../utils/Responsive';
 import { NavigationHeader } from '../components/NavigationHeader';
