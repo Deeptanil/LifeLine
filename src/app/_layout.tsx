@@ -1,6 +1,6 @@
 import { Tabs, useRouter, useSegments, usePathname } from 'expo-router';
 import React, { useState, useRef, useEffect } from 'react';
-import { View, Text, TouchableOpacity, StyleSheet, ScrollView, Dimensions, TextInput, KeyboardAvoidingView, Platform, ActivityIndicator, Animated } from 'react-native';
+import { View, Text, TouchableOpacity, StyleSheet, ScrollView, Dimensions, TextInput, KeyboardAvoidingView, Platform, ActivityIndicator, Animated, useWindowDimensions } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { DispatchProvider, useDispatch } from '../context/DispatchContext';
 import { AuthProvider, useAuth } from '../context/AuthContext';
@@ -10,7 +10,35 @@ import { SafeAreaProvider, useSafeAreaInsets } from 'react-native-safe-area-cont
 import { NavigationHeader } from '../components/NavigationHeader';
 import { RF } from '../utils/Responsive';
 
-const { width } = Dimensions.get('window');
+const { width: RAW_WIDTH } = Dimensions.get('window');
+const width = Platform.OS === 'web' ? Math.min(RAW_WIDTH, 420) : RAW_WIDTH;
+
+if (Platform.OS === 'web' && typeof document !== 'undefined') {
+  const styleId = 'hide-scrollbar-style';
+  if (!document.getElementById(styleId)) {
+    const style = document.createElement('style');
+    style.id = styleId;
+    style.textContent = `
+      html, body, #root {
+        height: 100%;
+        margin: 0;
+        padding: 0;
+      }
+      *::-webkit-scrollbar,
+      ::-webkit-scrollbar {
+        display: none !important;
+        width: 0px !important;
+        height: 0px !important;
+        background: transparent !important;
+      }
+      * {
+        -ms-overflow-style: none !important;
+        scrollbar-width: none !important;
+      }
+    `;
+    document.head.appendChild(style);
+  }
+}
 
 function TabIcon({ name, label, focused, activeColor }: { name: any; label: string; focused: boolean; activeColor: string }) {
   const { C } = useTheme();
@@ -305,7 +333,11 @@ function LayoutContent() {
 }
 
 export default function RootLayout() {
-  return (
+  const { width: windowWidth, height: windowHeight } = useWindowDimensions();
+  const isWeb = Platform.OS === 'web';
+  const isDesktop = isWeb && windowWidth > 500;
+
+  const appContent = (
     <SafeAreaProvider>
       <ThemeProvider>
         <AuthProvider>
@@ -316,9 +348,73 @@ export default function RootLayout() {
       </ThemeProvider>
     </SafeAreaProvider>
   );
+
+  if (isDesktop) {
+    return (
+      <View style={styles.desktopCanvas}>
+        <View
+          style={[
+            styles.phoneMockup,
+            {
+              width: Math.min(420, windowWidth - 32),
+              height: Math.min(880, windowHeight - 40),
+            },
+          ]}
+        >
+          {/* Simulated Dynamic Island Pill */}
+          <View pointerEvents="none" style={styles.dynamicIsland} />
+          <View style={styles.phoneInner}>{appContent}</View>
+        </View>
+      </View>
+    );
+  }
+
+  // Edge-to-edge for native phones and mobile web browsers
+  return <View style={styles.mobileContainer}>{appContent}</View>;
 }
 
 const styles = StyleSheet.create({
+  desktopCanvas: {
+    flex: 1,
+    width: '100%',
+    height: '100%',
+    backgroundColor: '#07060D', // Dark luxury canvas behind chassis
+    alignItems: 'center',
+    justifyContent: 'center',
+    padding: 16,
+  },
+  phoneMockup: {
+    borderRadius: 50,
+    borderWidth: 10,
+    borderColor: '#242036', // Titanium phone bezel
+    backgroundColor: '#0D0B1E',
+    overflow: 'hidden',
+    position: 'relative',
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 25 },
+    shadowOpacity: 0.65,
+    shadowRadius: 40,
+    elevation: 25,
+  },
+  dynamicIsland: {
+    position: 'absolute',
+    top: 10,
+    alignSelf: 'center',
+    width: 105,
+    height: 24,
+    borderRadius: 12,
+    backgroundColor: '#000000',
+    zIndex: 9999,
+  },
+  phoneInner: {
+    flex: 1,
+    width: '100%',
+    height: '100%',
+    overflow: 'hidden',
+  },
+  mobileContainer: {
+    flex: 1,
+  },
   trackerWrap: { position: 'absolute', bottom: 65, width: '100%', height: 140, alignItems: 'flex-start', backgroundColor: 'rgba(0,0,0,0)', zIndex: 100, overflow: 'visible' },
   trackerCard: { 
     flexDirection: 'row', 

@@ -13,7 +13,8 @@ import { NavigationHeader } from '../components/NavigationHeader';
 import { DB } from '../db/database';
 import { RF } from '../utils/Responsive';
 
-const { width: SCREEN_WIDTH } = Dimensions.get('window');
+const { width: RAW_WIDTH } = Dimensions.get('window');
+const SCREEN_WIDTH = Platform.OS === 'web' ? Math.min(RAW_WIDTH, 420) : RAW_WIDTH;
 const MAP_HEIGHT = SCREEN_WIDTH * (3000 / 1581); // Increased for longer image
 
 const DESTINATION = { lat: 12.934486, lng: 77.534720 };

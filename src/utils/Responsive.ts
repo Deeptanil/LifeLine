@@ -1,6 +1,7 @@
 import { Dimensions, PixelRatio, Platform } from 'react-native';
 
-const { width: SCREEN_WIDTH } = Dimensions.get('window');
+const { width: RAW_WIDTH } = Dimensions.get('window');
+export const SCREEN_WIDTH = Platform.OS === 'web' ? Math.min(RAW_WIDTH, 420) : RAW_WIDTH;
 
 // Guideline sizes are based on standard iPhone width (375)
 const guidelineBaseWidth = 375;
