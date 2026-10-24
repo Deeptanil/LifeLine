@@ -752,8 +752,8 @@ const getStyles = (C: any) => StyleSheet.create({
   alertTitle: { fontSize: RF(20), fontWeight: '800', color: C.textMain, marginBottom: 8 },
   alertSub: { fontSize: RF(14), color: C.textMuted, lineHeight: 22, marginBottom: 24 },
   alertActions: { flexDirection: 'row', gap: 12, marginTop: 8 },
-  alertCancelBtn: { flex: 1, paddingVertical: 14, borderRadius: 12, backgroundColor: C.navy3, alignItems: 'center', borderWidth: 1, borderColor: C.cardBorder },
-  alertConfirmBtn: { flex: 1, paddingVertical: 14, borderRadius: 12, backgroundColor: '#638BFF', alignItems: 'center', borderWidth: 1, borderColor: 'rgba(99,139,255,0.3)' },
+  alertCancelBtn: { flex: 1, paddingVertical: 14, minHeight: 48, borderRadius: 12, backgroundColor: C.navy3, alignItems: 'center', justifyContent: 'center', borderWidth: 1, borderColor: C.cardBorder },
+  alertConfirmBtn: { flex: 1, paddingVertical: 14, minHeight: 48, borderRadius: 12, backgroundColor: '#638BFF', alignItems: 'center', justifyContent: 'center', borderWidth: 1, borderColor: 'rgba(99,139,255,0.3)' },
 
   chatHeader: { flexDirection: 'row', alignItems: 'center', paddingHorizontal: 16, paddingVertical: 14, backgroundColor: C.navy2, borderBottomWidth: 1, borderBottomColor: C.cardBorder },
   msgBubbleWrap: { flexDirection: 'row', alignItems: 'flex-end', marginBottom: 16 },

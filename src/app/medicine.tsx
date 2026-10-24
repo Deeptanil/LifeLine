@@ -582,21 +582,40 @@ export default function MedicineScreen() {
             {rxStep === 'idle' ? (
               <View style={{ width: '100%', gap: 12 }}>
                 <TouchableOpacity 
-                   style={[styles.alertConfirmBtn, { flex: 0, width: '100%' }]} 
+                   style={{
+                     width: '100%',
+                     paddingVertical: 14,
+                     minHeight: 52,
+                     borderRadius: 16,
+                     backgroundColor: C.red,
+                     alignItems: 'center',
+                     justifyContent: 'center',
+                     flexDirection: 'row',
+                     borderWidth: 1,
+                     borderColor: 'rgba(232,41,58,0.3)',
+                   }} 
                    onPress={handleRxUpload}
                    activeOpacity={0.8}
                 >
-                  <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'center', paddingVertical: 2 }}>
-                    <Ionicons name="camera" size={20} color="#fff" style={{ marginRight: 8 }} />
-                    <Text style={{ color: '#fff', fontWeight: '800', fontSize: RF(14) }}>Capture & Upload</Text>
-                  </View>
+                  <Ionicons name="camera" size={20} color="#fff" style={{ marginRight: 8 }} />
+                  <Text style={{ color: '#fff', fontWeight: '800', fontSize: RF(15), lineHeight: RF(20) }}>Capture & Upload</Text>
                 </TouchableOpacity>
                 <TouchableOpacity 
-                   style={[styles.alertCancelBtn, { flex: 0, width: '100%' }]} 
+                   style={{
+                     width: '100%',
+                     paddingVertical: 14,
+                     minHeight: 52,
+                     borderRadius: 16,
+                     backgroundColor: C.navy3,
+                     alignItems: 'center',
+                     justifyContent: 'center',
+                     borderWidth: 1,
+                     borderColor: C.cardBorder,
+                   }} 
                    onPress={() => setRxModal(false)}
                    activeOpacity={0.7}
                 >
-                  <Text style={{ color: C.textMuted, fontWeight: '700', fontSize: RF(14) }}>Cancel</Text>
+                  <Text style={{ color: C.textMuted, fontWeight: '700', fontSize: RF(15), lineHeight: RF(20) }}>Cancel</Text>
                 </TouchableOpacity>
               </View>
             ) : rxStep !== 'approved' ? (
@@ -687,7 +706,7 @@ const getStyles = (C: any) => StyleSheet.create({
   alertTitle: { fontSize: RF(22), fontWeight: '800', color: C.textMain, marginBottom: 8 },
   alertSub: { fontSize: RF(16), color: C.textMuted, lineHeight: 22, marginBottom: 24 },
   alertActions: { flexDirection: 'row', gap: 12 },
-  alertCancelBtn: { flex: 1, paddingVertical: 14, borderRadius: 14, backgroundColor: C.navy3, alignItems: 'center', borderWidth: 1, borderColor: C.cardBorder },
-  alertConfirmBtn: { flex: 1, paddingVertical: 14, borderRadius: 14, backgroundColor: C.red, alignItems: 'center', borderWidth: 1, borderColor: 'rgba(232,41,58,0.3)' },
+  alertCancelBtn: { flex: 1, paddingVertical: 14, minHeight: 48, borderRadius: 14, backgroundColor: C.navy3, alignItems: 'center', justifyContent: 'center', borderWidth: 1, borderColor: C.cardBorder },
+  alertConfirmBtn: { flex: 1, paddingVertical: 14, minHeight: 48, borderRadius: 14, backgroundColor: C.red, alignItems: 'center', justifyContent: 'center', borderWidth: 1, borderColor: 'rgba(232,41,58,0.3)' },
   rxBox: { borderWidth: 1, borderRadius: 24, padding: 32, width: '100%', alignItems: 'center' },
 });

@@ -665,6 +665,6 @@ const getStyles = (C: any) => StyleSheet.create({
   alertTitle: { fontSize: RF(22), fontWeight: '800', color: C.textMain, marginBottom: 8 },
   alertSub: { fontSize: RF(16), color: C.textMuted, lineHeight: 22, marginBottom: 24 },
   alertActions: { flexDirection: 'row', gap: 12 },
-  alertCancelBtn: { flex: 1, paddingVertical: 14, borderRadius: 14, backgroundColor: C.navy3, alignItems: 'center', borderWidth: 1, borderColor: 'rgba(255,255,255,0.07)' },
-  alertConfirmBtn: { flex: 1, paddingVertical: 14, borderRadius: 14, backgroundColor: C.red, alignItems: 'center', borderWidth: 1, borderColor: 'rgba(232,41,58,0.3)' },
+  alertCancelBtn: { flex: 1, paddingVertical: 14, minHeight: 48, borderRadius: 14, backgroundColor: C.navy3, alignItems: 'center', justifyContent: 'center', borderWidth: 1, borderColor: 'rgba(255,255,255,0.07)' },
+  alertConfirmBtn: { flex: 1, paddingVertical: 14, minHeight: 48, borderRadius: 14, backgroundColor: C.red, alignItems: 'center', justifyContent: 'center', borderWidth: 1, borderColor: 'rgba(232,41,58,0.3)' },
 });
