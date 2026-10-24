@@ -35,6 +35,12 @@ if (Platform.OS === 'web' && typeof document !== 'undefined') {
         -ms-overflow-style: none !important;
         scrollbar-width: none !important;
       }
+      #phone-modal-root {
+        pointer-events: none !important;
+      }
+      #phone-modal-root > * {
+        pointer-events: auto !important;
+      }
     `;
     document.head.appendChild(style);
   }
@@ -367,7 +373,8 @@ export default function RootLayout() {
               // @ts-ignore
               id="phone-modal-root"
               nativeID="phone-modal-root"
-              style={[StyleSheet.absoluteFill, { zIndex: 99999, pointerEvents: 'box-none' }]}
+              pointerEvents="box-none"
+              style={[StyleSheet.absoluteFill, { zIndex: 99999 }]}
             />
           </View>
         </View>
@@ -383,7 +390,8 @@ export default function RootLayout() {
         // @ts-ignore
         id="phone-modal-root"
         nativeID="phone-modal-root"
-        style={[StyleSheet.absoluteFill, { zIndex: 99999, pointerEvents: 'box-none' }]}
+        pointerEvents="box-none"
+        style={[StyleSheet.absoluteFill, { zIndex: 99999 }]}
       />
     </View>
   );
