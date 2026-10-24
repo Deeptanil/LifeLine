@@ -35,6 +35,58 @@ if (Platform.OS === 'web' && typeof document !== 'undefined') {
         -ms-overflow-style: none !important;
         scrollbar-width: none !important;
       }
+      @media (min-width: 501px) {
+        body > div:has([aria-modal="true"]) {
+          position: fixed !important;
+          top: 0 !important;
+          left: 0 !important;
+          width: 100vw !important;
+          height: 100vh !important;
+          display: flex !important;
+          align-items: center !important;
+          justify-content: center !important;
+          pointer-events: none !important;
+          z-index: 99999 !important;
+        }
+        body > div:has([aria-modal="true"]) > div {
+          position: relative !important;
+          top: auto !important;
+          left: auto !important;
+          right: auto !important;
+          bottom: auto !important;
+          width: min(400px, calc(100vw - 52px)) !important;
+          height: min(860px, calc(100vh - 60px)) !important;
+          border-radius: 40px !important;
+          overflow: hidden !important;
+          pointer-events: auto !important;
+          display: flex !important;
+          flex-direction: column !important;
+        }
+        [aria-modal="true"] {
+          position: fixed !important;
+          top: 50% !important;
+          left: 50% !important;
+          right: auto !important;
+          bottom: auto !important;
+          transform: translate(-50%, -50%) !important;
+          width: min(400px, calc(100vw - 52px)) !important;
+          height: min(860px, calc(100vh - 60px)) !important;
+          border-radius: 40px !important;
+          overflow: hidden !important;
+          pointer-events: auto !important;
+          z-index: 99999 !important;
+        }
+        body > div:has([aria-modal="true"]) [aria-modal="true"] {
+          position: absolute !important;
+          top: 0 !important;
+          left: 0 !important;
+          right: 0 !important;
+          bottom: 0 !important;
+          transform: none !important;
+          width: 100% !important;
+          height: 100% !important;
+        }
+      }
     `;
     document.head.appendChild(style);
   }
@@ -361,8 +413,6 @@ export default function RootLayout() {
             },
           ]}
         >
-          {/* Simulated Dynamic Island Pill */}
-          <View pointerEvents="none" style={styles.dynamicIsland} />
           <View style={styles.phoneInner}>{appContent}</View>
         </View>
       </View>
@@ -395,16 +445,6 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.65,
     shadowRadius: 40,
     elevation: 25,
-  },
-  dynamicIsland: {
-    position: 'absolute',
-    top: 10,
-    alignSelf: 'center',
-    width: 105,
-    height: 24,
-    borderRadius: 12,
-    backgroundColor: '#000000',
-    zIndex: 9999,
   },
   phoneInner: {
     flex: 1,
