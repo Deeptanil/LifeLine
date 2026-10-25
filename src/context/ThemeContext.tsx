@@ -37,7 +37,16 @@ const SafeStorage = {
 };
 
 export const ThemeProvider = ({ children }: { children: React.ReactNode }) => {
-  const [isDark, setIsDark] = useState(false); // default: light
+  const [isDark, setIsDark] = useState<boolean>(() => {
+    if (typeof window !== 'undefined' && window.localStorage) {
+      try {
+        const val = window.localStorage.getItem(THEME_KEY);
+        if (val === 'dark') return true;
+        if (val === 'light') return false;
+      } catch {}
+    }
+    return false; // default: light
+  });
 
   useEffect(() => {
     SafeStorage.getItem(THEME_KEY).then(val => {

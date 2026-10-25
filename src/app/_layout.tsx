@@ -221,7 +221,7 @@ function GlobalTrackerBanner() {
 }
 
 function AuthWall() {
-  const { user, login, register } = useAuth();
+  const { user, login, register, isLoading } = useAuth();
   const { C, isDark } = useTheme();
   const [isLogin, setIsLogin] = useState(true);
 
@@ -233,7 +233,7 @@ function AuthWall() {
 
   const shakeAnim = useRef(new Animated.Value(0)).current;
 
-  if (user) return null;
+  if (isLoading || user) return null;
 
   const triggerShake = () => {
     shakeAnim.setValue(0);
@@ -339,8 +339,10 @@ function LayoutContent() {
 }
 
 export default function RootLayout() {
-  const { width: windowWidth, height: windowHeight } = useWindowDimensions();
+  const dims = useWindowDimensions();
   const isWeb = Platform.OS === 'web';
+  const windowWidth = isWeb && typeof window !== 'undefined' ? window.innerWidth : dims.width;
+  const windowHeight = isWeb && typeof window !== 'undefined' ? window.innerHeight : dims.height;
   const isDesktop = isWeb && windowWidth > 500;
 
   const appContent = (

@@ -6,6 +6,7 @@ const STORAGE_KEY = '@lifeline_user';
 
 interface AuthContextProps {
   user: User | null;
+  isLoading: boolean;
   login: (phone: string, pass: string) => Promise<{ success: boolean; msg?: string }>;
   logout: () => void;
   register: (name: string, phone: string, pass: string) => Promise<{ success: boolean; msg?: string }>;
@@ -17,6 +18,7 @@ interface AuthContextProps {
 
 const AuthContext = createContext<AuthContextProps>({
   user: null,
+  isLoading: true,
   login: async () => ({ success: false }),
   logout: () => {},
   register: async () => ({ success: false }),
@@ -27,7 +29,24 @@ const AuthContext = createContext<AuthContextProps>({
 });
 
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
-  const [user, setUser] = useState<User | null>(null);
+  const [user, setUser] = useState<User | null>(() => {
+    if (typeof window !== 'undefined' && window.localStorage) {
+      try {
+        const stored = window.localStorage.getItem(STORAGE_KEY);
+        if (stored) return JSON.parse(stored);
+      } catch {}
+    }
+    return null;
+  });
+  const [isLoading, setIsLoading] = useState<boolean>(() => {
+    if (typeof window !== 'undefined' && window.localStorage) {
+      try {
+        const stored = window.localStorage.getItem(STORAGE_KEY);
+        if (stored) return false;
+      } catch {}
+    }
+    return true;
+  });
 
   // Restore persisted user on app start
   useEffect(() => {
@@ -48,6 +67,8 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         // Fallback: load default demo user without persistence
         const defaultUser = await DB.Users.findByPhone('7760343724');
         if (defaultUser) setUser(defaultUser);
+      } finally {
+        setIsLoading(false);
       }
     };
     restoreUser();
@@ -139,7 +160,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   };
 
   return (
-    <AuthContext.Provider value={{ user, login, logout, register, updateProfile, updateMedicalProfile, saveMedicalOnboarding, deleteProfile }}>
+    <AuthContext.Provider value={{ user, isLoading, login, logout, register, updateProfile, updateMedicalProfile, saveMedicalOnboarding, deleteProfile }}>
       {children}
     </AuthContext.Provider>
   );
