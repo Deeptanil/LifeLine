@@ -9,6 +9,7 @@ import { SafeAreaProvider, useSafeAreaInsets } from 'react-native-safe-area-cont
 
 import { NavigationHeader } from '../components/NavigationHeader';
 import { RF } from '../utils/Responsive';
+import { initPostHog, trackPageView } from '../utils/posthog';
 
 const { width: RAW_WIDTH } = Dimensions.get('window');
 const width = Platform.OS === 'web' ? Math.min(RAW_WIDTH, 420) : RAW_WIDTH;
@@ -301,6 +302,11 @@ function AuthWall() {
 function LayoutContent() {
   const { C, isDark } = useTheme();
   const insets = useSafeAreaInsets();
+  const pathname = usePathname();
+
+  useEffect(() => {
+    trackPageView(pathname);
+  }, [pathname]);
 
   return (
     <View style={{ flex: 1, backgroundColor: C.navy }}>
@@ -344,6 +350,10 @@ export default function RootLayout() {
   const windowWidth = isWeb && typeof window !== 'undefined' ? window.innerWidth : dims.width;
   const windowHeight = isWeb && typeof window !== 'undefined' ? window.innerHeight : dims.height;
   const isDesktop = isWeb && windowWidth > 500;
+
+  useEffect(() => {
+    initPostHog();
+  }, []);
 
   const appContent = (
     <SafeAreaProvider>
